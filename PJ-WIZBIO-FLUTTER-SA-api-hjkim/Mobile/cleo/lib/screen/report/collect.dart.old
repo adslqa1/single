@@ -1,0 +1,158 @@
+import 'package:cleo/constants.dart';
+import 'package:cleo/model/test_report.dart';
+import 'package:cleo/provider/bluetooth.provider.dart';
+import 'package:cleo/screen/report/detail.dart';
+import 'package:cleo/util/sql_helper.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class ReportCollectScreen extends StatefulWidget {
+  final int reportId;
+  const ReportCollectScreen({Key? key, required this.reportId})
+      : super(key: key);
+
+  @override
+  State<ReportCollectScreen> createState() => _ReportCollectScreenState();
+}
+
+class _ReportCollectScreenState extends State<ReportCollectScreen> {
+  bool collecting = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    tryCollectData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              CircularProgressIndicator(color: primary),
+              SizedBox(height: 32),
+              Text(
+                'Processing',
+                style: TextStyle(
+                  fontSize: 32,
+                ),
+              ),
+              Text(
+                'Results...',
+                style: TextStyle(
+                  fontSize: 32,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void tryCollectData() async {
+    if (collecting) {
+      return;
+    }
+    setState(() {
+      collecting = true;
+    });
+    final reportId = widget.reportId;
+    try {
+      await collectAndSaveData(reportId);
+    } catch (err) {
+      debugPrint(err.toString());
+
+      showErrorAndPop();
+      return;
+    }
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) {
+          return ReportDetailScreen(reportId: reportId);
+        },
+        settings: const RouteSettings(name: ReportDetailScreen.routeName),
+      ),
+    );
+  }
+
+  Future collectAndSaveData(int reportId) async {
+    final report = await SqlReport.getReport(widget.reportId);
+    if (report == null) {
+      throw 'report not exist';
+    }
+
+    final device =
+        Provider.of<BluetoothProvider>(context, listen: false).currentDevice!;
+    if (report.macAddress.toUpperCase() !=
+        device.device.id.toString().toUpperCase()) {
+      throw 'device not valid';
+    }
+
+    final collected = await device.collectData();
+    final spData = collected.where((row) => row.type == 'P');
+    final scData = collected.where((row) => row.type == 'C');
+
+    double offset1 = calcAvg(spData.map((row) => row.ch1));
+    double offset2 = calcAvg(spData.map((row) => row.ch2));
+    double offset3 = calcAvg(spData.map((row) => row.ch3));
+
+    int column1 = calcMax(scData.map((row) => row.ch1));
+    int column2 = calcMax(scData.map((row) => row.ch2));
+    int column3 = calcMax(scData.map((row) => row.ch3));
+
+    int val1 = (column1 - offset1).round();
+    int val2 = (column2 - offset2).round();
+    int val3 = (column3 - offset3).round();
+
+    report.result1 = val1;
+    report.result2 = val2;
+    report.result3 = val3;
+
+    report.reportStatus = ReportStatus.complete;
+    debugPrint('collected result $val1, $val2, $val3');
+
+    await SqlReport.updateReport(reportId, report);
+  }
+
+  double calcAvg(Iterable<int> numIter) {
+    final count = numIter.length;
+    final sum = numIter.reduce((value, element) => value + element);
+    return sum / count;
+  }
+
+  int calcMax(Iterable<int> numIter) {
+    return numIter
+        .reduce((value, element) => (element > value ? element : value));
+  }
+
+  void showErrorAndPop() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: const Text('Failed to fetch data from device'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+              child: const Text('to Main'),
+            )
+          ],
+        );
+      },
+    );
+  }
+}

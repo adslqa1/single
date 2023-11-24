@@ -1,0 +1,114 @@
+{
+  "project_info": {
+    "project_number": "786471741908",
+    "project_id": "cleo-one-c614e",
+    "storage_bucket": "cleo-one-c614e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786471741908:android:b5987ad24780f4f6d1ce41",
+        "android_client_info": {
+          "package_name": "com.app.cleo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786471741908-ngtoptm94qos0o0ud2cfior6551emdl8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.cleo",
+            "certificate_hash": "db19f04a50e0499add386611f50851331f1db874"
+          }
+        },
+        {
+          "client_id": "786471741908-ps32ed0gg1r4203kvfs8vo3dccda8mpd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.cleo",
+            "certificate_hash": "0d4921edb67b982c82183e73175b696d7c39d5e1"
+          }
+        },
+        {
+          "client_id": "786471741908-5itcv6hnrkbcrkfi75oklbk1khjarunh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaYtN-J5QufOpTwdFeN_ojNUviLkQN-Sc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786471741908-5itcv6hnrkbcrkfi75oklbk1khjarunh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "786471741908-84450j70sfhcj2h5jj8tp86ar505n42c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cleo.wizbio"
+              }
+            }
+          ]
+        }
+      }
+    },
+	{
+      "client_info": {
+        "mobilesdk_app_id": "1:786471741908:android:b5987ad24780f4f6d1ce41",
+        "android_client_info": {
+          "package_name": "com.app.cleo.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786471741908-ngtoptm94qos0o0ud2cfior6551emdl8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.cleo",
+            "certificate_hash": "db19f04a50e0499add386611f50851331f1db874"
+          }
+        },
+        {
+          "client_id": "786471741908-ps32ed0gg1r4203kvfs8vo3dccda8mpd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.cleo",
+            "certificate_hash": "0d4921edb67b982c82183e73175b696d7c39d5e1"
+          }
+        },
+        {
+          "client_id": "786471741908-5itcv6hnrkbcrkfi75oklbk1khjarunh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaYtN-J5QufOpTwdFeN_ojNUviLkQN-Sc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786471741908-5itcv6hnrkbcrkfi75oklbk1khjarunh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "786471741908-84450j70sfhcj2h5jj8tp86ar505n42c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cleo.wizbio"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
